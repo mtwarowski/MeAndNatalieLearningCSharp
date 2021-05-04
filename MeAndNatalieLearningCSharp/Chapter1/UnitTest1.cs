@@ -73,13 +73,41 @@ namespace MeAndNatalieLearningCSharp
             bool areClassIntsEqual = classIntWrapper.MyInt == classIntWrapper2.MyInt;
 
         }
-        
-        public struct StructIntWrapper
+
+        [Fact]
+        public void StructVsClassTests_Mutate()
         {
+            StructIntWrapper structIntWrapper = new StructIntWrapper();
+            structIntWrapper.MyInt = 1;
+
+            Mutate(structIntWrapper);
+
+            ClassIntWrapper classIntWrapper = new ClassIntWrapper();
+            classIntWrapper.MyInt = 1;
+
+            Mutate(classIntWrapper);
+        }
+
+
+        public void Mutate(IntWrapper intWrapper) => intWrapper.MyInt = 10;
+
+
+        public interface IntWrapper
+        {
+            int MyInt { get; set; }
+        }
+        
+        public struct StructIntWrapper : IntWrapper
+        {
+            public StructIntWrapper(int myInt)
+            {
+                MyInt = myInt;  
+            }
+
             public int MyInt { get; set; }
         }
 
-        public class ClassIntWrapper
+        public class ClassIntWrapper : IntWrapper
         {
             public int MyInt { get; set; }
         }
